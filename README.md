@@ -4,7 +4,8 @@ Fake Certification Authority Layer
 Утилита для аутентификации по ЭЦП в уязвимых системах, не проверяющих подлинность сертификата НУЦ РК.  
 Для использования необхродимо закрыть NCALayer.
 
-Установка зависимостей Python 3.10+: `pip install requests future pyasn1 pycryptodome websockets`
+Установка зависимостей Python 3.10+: `pip install requests future pyasn1 pycryptodome websockets`  
+Корневой сертификат `FCALayer-CA.crt` должен быть установлен как доверенный в браузер.
 
 Параметры запуска:  
 ```
