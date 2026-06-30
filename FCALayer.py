@@ -33,6 +33,7 @@ import base64
 import sys
 import getopt
 import signal
+import secrets
 import Crypto.Hash.SHA256 as sha256
 import Crypto.PublicKey.RSA as rsa
 from datetime import datetime, timedelta
@@ -366,8 +367,8 @@ def get_altered_cert(cert_info):
     cert['field-0']['field-4'][0] = (datetime.now() - timedelta(days=180)).strftime("%y%m%d%H%M%S") + 'Z'
     cert['field-0']['field-4'][1] = (datetime.now() + timedelta(days=180)).strftime("%y%m%d%H%M%S") + 'Z'
 
-    # Рандомная подпись сертификата, привет QazCloud
-    # VXNlIHlvdXIgZ2NocSBtYWdpYw0KDQoyNTMxNDYyNTQzMzIyNTM4NDIyNTMwMzgyNTMwMzAyNTMwMzQyNTM2MzAyNTMzNDU2NjI1MzAzMDI1NDMzMzI1NDI0NjI1MzI0NDI1NDMzMzI1MzgzOTQxMjUzMDQxNDIyNTMyMzEyNTMxMzAyNTMwMzAyNTQzMzMyNTM5MzAyNTQzMzIyNTQxNDIyNTMwNDM2ZTQ2MjU0MzMyMjU0MTM5MjU0MzMzMjUzODM0MjU0MzMyMjUzODM0MzY0MTI1MzIzNzMxMjUzMDM5MjU0MzMzMjUzODM2MjU0MzMzMjUzODM2MjUzMTM4MjU0MzMzMjU0MjQxMjUzMjM5MjU0MzMzMjU0MTM4MjUzMjQzMjU0MzMzMjU0MjQxMjU0MzMyMjU0MjM3NzcyNTQzMzMyNTQyMzMyNTQzMzMyNTM5MzcyNTQzMzIyNTQxNDYyNTQzMzMyNTQyMzAyNTQzMzMyNTM5MzAyNTQzMzIyNTM4MzQ1NTc4MjUzNzQyMjUzNTQ2MjUzMjMyNjY3ODI1MzAzMDQ5MjU0MzMyMjU0MjMzMjU0MzMzMjUzOTMyMjU0MzMzMjUzOTM0MjU0MzMzMjUzOTM3MjU0MzMzMjUzOTMxMjUzNzQ2MjUzMjQ2MjU0MzMzMjUzOTQxMjU0MzMyMjUzOTM1MjU0MzMyMjU0MTM3MjUzMjM1MjUzNzQzMjU0MzMzMjU0MjQ1NDMyNTM0MzAzODI1NDMzMzI1MzgzMTI1NDMzMzI1NDEzNDMyNTgyNTQzMzIyNTQxMzcyNTQzMzMyNTM5MzcyNTQzMzMyNTQyNDUyNTQzMzMyNTQxMzU3NjI1NDMzMzI1NDEzODI1NDMzMzI1NDE0NDI1MzE0MTI1NDMzMzI1Mzk0NDI1MzEzOTI1MzA0MzI1NDMzMzI1MzgzOTI1NDMzMzI1MzgzNzM4MjU0MzMyMjUzOTM3MjU0MzMzMjU0MTMyMjUzMzQ0MjUzMjQ2MjUzMDM1MjU0MzMyMjU0MjQ0MzIyNTMwMzY1NDI1MzAzMDI1MzAzMDI1MzAzMA==
+    # Рандомная подпись сертификата
+    cert['field-2'] = bin(int.from_bytes(b'\x00' + secrets.token_bytes(512), "big"))[2:]
 
     # Serialize back to ASN.1 and return in base64 encoded certificate
     cert_info['certificate'] = insert_newlines(base64.b64encode(asn1encoder.encode(cert)).decode('ascii'))
